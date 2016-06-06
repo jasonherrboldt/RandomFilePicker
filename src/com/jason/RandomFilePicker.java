@@ -9,27 +9,6 @@ import java.io.*;
  */
 public class RandomFilePicker {
 
-    // http://stackoverflow.com/questions/7024031/java-open-a-file-windows-mac
-
-    /*
-            System.out.println("Exploring directory " + file.getName());
-        if(OSDetector.isWindows()) {
-            System.out.println("oh hai windows");
-            try {
-                Runtime.getRuntime().exec(new String[] {"rundll32", "url.dll,FileProtocolHandler", file.getAbsolutePath()});
-            } catch (IOException e) {
-                System.out.println("Error opening file " + file.getName());
-            }
-        } else if (OSDetector.isMac()) {
-            System.out.println("oh hai mac");
-            try {
-                Runtime.getRuntime().exec(new String[]{"/usr/bin/open", file.getAbsolutePath()});
-            } catch (IOException e) {
-                // todo
-            }
-        }
-     */
-
     private File directory;
     private boolean recursive;
 
@@ -49,7 +28,25 @@ public class RandomFilePicker {
      * Open a random file
      */
     public void openRandomFile() {
-        System.out.println("oh hai from openRandomFile.");
+        System.out.println("oh hai from openRandomFile. Printing discovered filenames...");
+        File[] listOfFiles = directory.listFiles();
+        for(File file : listOfFiles) {
+            if(file != null) {
+                System.out.println(file.toString());
+            }
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
