@@ -22,7 +22,7 @@ public class OSDetector {
     /**
      * @return true if OS is Windows, false otherwise.
      */
-    public static boolean isWindows() {
+    public static boolean isWindows7() {
         return isWindows7;
     }
 

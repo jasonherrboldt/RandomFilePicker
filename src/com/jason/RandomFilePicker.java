@@ -18,24 +18,28 @@ public class RandomFilePicker {
     private List<File> discoveredFiles;
     String filenamePattern;
     Pattern pattern;
+    int maxlength;
 
     /**
      * Public constructor.
      *
      * @param directory   The directory to explore
      * @param recursive   Whether the search should be recursive.
+     * @param maxlength   The max number of files the program is allowed to discover.
+     *
      */
-    public RandomFilePicker(File directory, boolean recursive) {
+    public RandomFilePicker(File directory, boolean recursive, int maxlength) {
         this.directory = directory;
         this.recursive = recursive;
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
-        if(OSDetector.isWindows()) {
-            filenamePattern = "^[a-zA-Z0-9_\'()-^,]*\\.[a-zA-Z0-9]*$"; // Allowed special characters are arbitrary guesses.
+        if(OSDetector.isWindows7()) {
+            filenamePattern = "^[a-zA-Z0-9_\'()-^,]+\\.[a-zA-Z0-9]+$"; // Allowed special characters (_ ' ( ) - ^ ,) are arbitrary guesses.
         }
         // todo: Need to implement pattern for valid Mac filenames.
         pattern = Pattern.compile(filenamePattern);
-        // Debug, remove:
+        this.maxlength = maxlength;
+        // Remove (for debug).
         System.out.println("oh hai from RandomFilePicker constructor. Directory = " + directory.toString() + ", recursive = " + recursive + ".");
     }
 
@@ -44,7 +48,7 @@ public class RandomFilePicker {
      */
     public void run() {
         discoverFiles();
-        printDiscoveredFiles(); // Debug, remove.
+        printDiscoveredFiles(); // Remove (for debug).
         openFile(getRandomFile());
     }
 
@@ -54,19 +58,17 @@ public class RandomFilePicker {
      * @param file The file to open.
      */
     private void openFile(File file) {
-        // if windows, if mac, etc.
-        // if file is of form *.*
-        // http://www.tutorialspoint.com/java/java_regular_expressions.htm
-
-        if(OSDetector.isWindows()) {
-            System.out.println("oh hai windows");
+        System.out.println("oh hai from openFile. I'm supposed to open " + file.getName());
+        if(OSDetector.isWindows7()) {
+//            System.out.println("oh hai windows");
 //            try {
-//                Runtime.getRuntime().exec(new String[] {"rundll32", "url.dll,FileProtocolHandler", file.getAbsolutePath()});
+//                Runtime.getRuntime().exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", file.getAbsolutePath()});
 //            } catch (IOException e) {
 //                System.out.println("Error opening file " + file.getName());
 //            }
         } else if (OSDetector.isMac()) {
             System.out.println("oh hai mac");
+            System.out.println("Program currently only supports Windows 7. More OS versions coming soon.");
 //            try {
 //                Runtime.getRuntime().exec(new String[]{"/usr/bin/open", file.getAbsolutePath()});
 //            } catch (IOException e) {
@@ -83,12 +85,13 @@ public class RandomFilePicker {
         return discoveredFiles.get(index);
     }
 
-    // For debug:
+    // Remove (for debug).
     private void printDiscoveredFiles() {
         System.out.println("Printing contents of discoveredFiles:");
         for (File file : discoveredFiles) {
             System.out.println(file.toString());
         }
+        System.out.println("");
     }
 
     /**
