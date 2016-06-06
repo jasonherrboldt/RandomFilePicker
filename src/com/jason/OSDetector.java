@@ -7,14 +7,14 @@ package com.jason;
  */
 public class OSDetector {
 
-    private static boolean isWindows = false;
-    // private static boolean isLinux = false;
+    private static boolean isWindows7 = false;
+    // private static boolean isLinux = false; // someday
     private static boolean isMac = false;
 
     static
     {
         String os = System.getProperty("os.name").toLowerCase();
-        isWindows = os.contains("win");
+        isWindows7 = os.contains("windows 7");
         // isLinux = os.contains("nux") || os.contains("nix");
         isMac = os.contains("mac");
     }
@@ -23,7 +23,7 @@ public class OSDetector {
      * @return true if OS is Windows, false otherwise.
      */
     public static boolean isWindows() {
-        return isWindows;
+        return isWindows7;
     }
 
 //    /**

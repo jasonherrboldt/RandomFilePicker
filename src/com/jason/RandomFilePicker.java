@@ -1,8 +1,9 @@
 package com.jason;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Opens a file at random in a given directory.
@@ -13,7 +14,10 @@ public class RandomFilePicker {
 
     private File directory;
     private boolean recursive;
+    private Random randomGenerator;
     private List<File> discoveredFiles;
+    String filenamePattern;
+    Pattern pattern;
 
     /**
      * Public constructor.
@@ -24,15 +28,59 @@ public class RandomFilePicker {
     public RandomFilePicker(File directory, boolean recursive) {
         this.directory = directory;
         this.recursive = recursive;
+        randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
+        if(OSDetector.isWindows()) {
+            filenamePattern = "^[a-zA-Z0-9_\'()-^,]*\\.[a-zA-Z0-9]*$"; // Allowed special characters are arbitrary guesses.
+        }
+        // todo: Need to implement pattern for valid Mac filenames.
+        pattern = Pattern.compile(filenamePattern);
+        // Debug, remove:
         System.out.println("oh hai from RandomFilePicker constructor. Directory = " + directory.toString() + ", recursive = " + recursive + ".");
     }
 
-
-    public void openRandomFile() {
+    /**
+     * Chain of commands triggered from Main.
+     */
+    public void run() {
         discoverFiles();
-        printDiscoveredFiles();
-        // Open a file at random.
+        printDiscoveredFiles(); // Debug, remove.
+        openFile(getRandomFile());
+    }
+
+    /**
+     * Open a file.
+     *
+     * @param file The file to open.
+     */
+    private void openFile(File file) {
+        // if windows, if mac, etc.
+        // if file is of form *.*
+        // http://www.tutorialspoint.com/java/java_regular_expressions.htm
+
+        if(OSDetector.isWindows()) {
+            System.out.println("oh hai windows");
+//            try {
+//                Runtime.getRuntime().exec(new String[] {"rundll32", "url.dll,FileProtocolHandler", file.getAbsolutePath()});
+//            } catch (IOException e) {
+//                System.out.println("Error opening file " + file.getName());
+//            }
+        } else if (OSDetector.isMac()) {
+            System.out.println("oh hai mac");
+//            try {
+//                Runtime.getRuntime().exec(new String[]{"/usr/bin/open", file.getAbsolutePath()});
+//            } catch (IOException e) {
+//                System.out.println("Error opening file " + file.getName());
+//            }
+        }
+    }
+
+    /**
+     * Pick and return a file at random from discoveredFiles.
+     */
+    private File getRandomFile() {
+        int index = randomGenerator.nextInt(discoveredFiles.size());
+        return discoveredFiles.get(index);
     }
 
     // For debug:
@@ -51,7 +99,7 @@ public class RandomFilePicker {
             File[] files = directory.listFiles();
             for(File file : files) {
                 if(file != null) {
-                    if(file.isFile()) {
+                    if(file.isFile() && filenameHasDot(file.getName())) {
                         discoveredFiles.add(file);
                     }
                 }
@@ -72,9 +120,25 @@ public class RandomFilePicker {
             if (file.isDirectory()) {
                 discoverFiles(file);
             } else {
-                discoveredFiles.add(file);
+                if(filenameHasDot((file.getName()))) {
+                    discoveredFiles.add(file);
+                }
             }
         }
+    }
+
+    /**
+     * Determine if a discovered file is of the type *.*
+     *
+     * @param filename The file to inspect.
+     * @return
+     */
+    private boolean filenameHasDot(String filename) {
+        Matcher m = pattern.matcher(filename);
+        if (m.find( )) {
+            return true;
+        }
+        return false;
     }
 }
 
