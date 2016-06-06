@@ -9,4 +9,4 @@ Command line usage:
 
 For Windows users: If you specify a filepath, be warned that its name must not contain spaces (inner recursive directories may).
 
-(Currently only supports Windows 7. Future updates will include other versions of Windows as well sa OS X.)
+(Currently only supports Windows 7. Future updates will include other versions of Windows as well as OS X.)
