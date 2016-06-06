@@ -4,12 +4,17 @@ import java.io.File;
 
 public class Main {
 
-    // todo: Put a warning here and in the readme about filenames with spaces.
+    // todo: For Windows: Put a warning here and in the readme about root directory names with spaces (inner directory names can have spaces).
 
     // Test filepath for runtime config:
-    // C:\dev\demos\RandomFilePicker\Test_Directory
+    // C:\dev\demos\RandomFilePicker\Test_Directory -r
 
     public static void main(String[] args) {
+
+        if(!OSDetector.isWindows()) {
+            throw new IllegalArgumentException("Program currently only supports Windows. Mac coming soon.");
+        }
+
         if(args.length != 1 && args.length != 2) {
             throw new IllegalArgumentException("Invalid number of arguments received; must be 1 or 2.");
         }
