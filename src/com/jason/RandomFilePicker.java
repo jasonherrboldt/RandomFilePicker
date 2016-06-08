@@ -39,8 +39,6 @@ public class RandomFilePicker {
         // todo: Need to implement pattern for valid Mac filenames.
         pattern = Pattern.compile(filenamePattern);
         this.maxlength = maxlength;
-        // Remove (for debug).
-        System.out.println("oh hai from RandomFilePicker constructor. Directory = " + directory.toString() + ", recursive = " + recursive + ".");
     }
 
     /**
