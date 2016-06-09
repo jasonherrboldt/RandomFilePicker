@@ -42,6 +42,15 @@ public class RandomFilePicker {
         }
         // todo: Need to implement pattern for valid Mac filenames.
         pattern = Pattern.compile(filenamePattern);
+
+        String directoryName = this.directory.getName();
+        if(directoryName.equals(".")) {
+            directoryName = "(the current directory)";
+        }
+
+        // Remove (for debug):
+        System.out.println("\nArguments received: root directory: " + directoryName + ", recursive: " + recursive +
+                ", maxLength: " + maxLength + ", searchOnly: " + searchOnly + ".\n");
     }
 
     /**
@@ -65,12 +74,12 @@ public class RandomFilePicker {
     private void openFile(File file) {
         System.out.println("oh hai from openFile. I'm supposed to open " + file.getName());
         if(OSDetector.isWindows7()) {
-//            System.out.println("oh hai windows");
-//            try {
-//                Runtime.getRuntime().exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", file.getAbsolutePath()});
-//            } catch (IOException e) {
-//                System.out.println("Error opening file " + file.getName());
-//            }
+            // System.out.println("oh hai windows");
+            try {
+                Runtime.getRuntime().exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", file.getAbsolutePath()});
+            } catch (IOException e) {
+                System.out.println("Error opening file " + file.getName());
+            }
         } else if (OSDetector.isMac()) {
             System.out.println("oh hai mac");
             System.out.println("Program currently only supports Windows 7. More OS versions coming soon.");
@@ -94,9 +103,11 @@ public class RandomFilePicker {
      * Print the discovered files to the console.
      */
     private void printDiscoveredFiles() {
-        System.out.println("Printing contents of discoveredFiles:\n");
+        int printCount = 1;
+        System.out.println("Printing discovered files:\n");
         for (File file : discoveredFiles) {
-            System.out.println(file.toString());
+            System.out.println(printCount + ": " + file.toString());
+            printCount++;
         }
         System.out.println("");
     }

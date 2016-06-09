@@ -4,19 +4,15 @@ import java.io.File;
 
 public class Main {
 
-    // todo: For Windows: Put a warning here and in the readme about root directory names with spaces (inner directory names can have spaces).
-
     /*
 
         Test runtime configs:
 
         C:\dev\demos\RandomFilePicker\Test_Directory -r
-        C:\dev\demos\RandomFilePicker\Test_Directory -r -m 2000 -d
+        C:\dev\demos\RandomFilePicker\Test_Directory -r -m 2000 -s
         . -r
 
      */
-
-
 
     public static void main(String[] args) {
 
@@ -38,15 +34,15 @@ public class Main {
         String directoryName = args[0];
         File directory = new File(directoryName);
         if (!directory.exists()) {
-            throw new IllegalArgumentException("Unable to access directory " + directoryName);
+            throw new IllegalArgumentException("Unable to access directory " + directoryName + ". Please make sure the root directory is the first argument.");
         }
 
         // Find out if user wants a recursive exploration.
         boolean recursive = false;
-        int maxLength = 0;
+        int maxLength = 100000;
         boolean searchOnly = false;
 
-        for (int i = 0; i < args.length; i++) {
+        for (int i = 1; i < args.length; i++) {
             switch(args[i]) {
                 case "-r": {
                     recursive = true;
@@ -70,9 +66,6 @@ public class Main {
                 }
             }
         }
-
-        System.out.println("\nArguments received: root directory: " + directoryName + ", recursive: " + recursive +
-                ", maxLength: " + maxLength + ", searchOnly: " + searchOnly + ".\n");
 
         // Create the RandomFilePicker object and run it.
         RandomFilePicker rfp = new RandomFilePicker(directory, searchOnly, recursive, maxLength);
