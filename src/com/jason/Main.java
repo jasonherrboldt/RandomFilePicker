@@ -8,18 +8,10 @@ public class Main {
 
     /*
 
-        Command line usage:
-            * directory [The directory to explore ("." for current).]
-            * -r (Make the exploration recursive to all subdirectories.)
-            * -m [The max number of files the program is allowed to discover. Must be >= 1 and <= 100,000.
-                 (Default is 100,000.)]
-            * -d (Only display the discovered files -- do not open any of them.)
+        Test runtime configs:
 
-        Test filepath for runtime config using a specific filepath:
         C:\dev\demos\RandomFilePicker\Test_Directory -r
         C:\dev\demos\RandomFilePicker\Test_Directory -r -m 2000 -d
-
-        Using the current directory:
         . -r
 
      */
@@ -39,7 +31,7 @@ public class Main {
 
         // Blow up if the user's not submitting the correct number of arguments.
         if(args.length < 1 || args.length > 5) {
-            throw new IllegalArgumentException("Invalid number of arguments received; must be 1, 2, 3, 4, or 5.");
+            throw new IllegalArgumentException("Invalid number of arguments received; must be > 0 and < 6.");
         }
 
         // Blow up if unable to verify existence of chosen directory.
@@ -52,14 +44,7 @@ public class Main {
         // Find out if user wants a recursive exploration.
         boolean recursive = false;
         int maxLength = 0;
-        boolean displayOnly = false;
-//        if(args.length == 2) {
-//            if(args[1].equalsIgnoreCase("-r")) {
-//                recursive = true;
-//            } else {
-//                throw new IllegalArgumentException("Illegal argument received: " + args[1]);
-//            }
-//        }
+        boolean searchOnly = false;
 
         for (int i = 0; i < args.length; i++) {
             switch(args[i]) {
@@ -74,23 +59,23 @@ public class Main {
                     } catch (NumberFormatException e) {
                         throw new IllegalArgumentException("Received illegal maxLength argument (must be a positive integer): " + args[i + 1]);
                     }
-                    if(maxLength < 1 || maxLength > 200000) {
-                        throw new IllegalArgumentException("Received illegal maxLength argument (must be >= 1 and <= 200,000): " + args[i + 1]);
+                    if(maxLength < 1 || maxLength > 100000) {
+                        throw new IllegalArgumentException("Received illegal maxLength argument (must be >= 1 and <= 100,000): " + args[i + 1]);
                     }
                     break;
                 }
-                case "-d": {
-                    displayOnly = true;
+                case "-s": {
+                    searchOnly = true;
                     break;
                 }
             }
         }
 
         System.out.println("\nArguments received: root directory: " + directoryName + ", recursive: " + recursive +
-                ", maxLength: " + maxLength + ", displayOnly: " + displayOnly + ".\n");
+                ", maxLength: " + maxLength + ", searchOnly: " + searchOnly + ".\n");
 
         // Create the RandomFilePicker object and run it.
-        RandomFilePicker rfp = new RandomFilePicker(directory, recursive, maxLength);
+        RandomFilePicker rfp = new RandomFilePicker(directory, searchOnly, recursive, maxLength);
         rfp.run();
     }
 

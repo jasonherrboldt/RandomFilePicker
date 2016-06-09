@@ -13,24 +13,28 @@ import java.util.regex.Pattern;
 public class RandomFilePicker {
 
     private File directory;
+    private boolean searchOnly;
     private boolean recursive;
+    private int maxLength;
     private Random randomGenerator;
     private List<File> discoveredFiles;
     String filenamePattern;
     Pattern pattern;
-    int maxlength;
 
     /**
      * Public constructor.
      *
      * @param directory   The directory to explore
+     * @param searchOnly  Whether the search should only print results.
      * @param recursive   Whether the search should be recursive.
-     * @param maxlength   The max number of files the program is allowed to discover.
+     * @param maxLength   The max number of files the program is allowed to discover.
      *
      */
-    public RandomFilePicker(File directory, boolean recursive, int maxlength) {
+    public RandomFilePicker(File directory, boolean searchOnly, boolean recursive, int maxLength) {
         this.directory = directory;
+        this.searchOnly = searchOnly;
         this.recursive = recursive;
+        this.maxLength = maxLength;
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
         if(OSDetector.isWindows7()) {
@@ -38,7 +42,6 @@ public class RandomFilePicker {
         }
         // todo: Need to implement pattern for valid Mac filenames.
         pattern = Pattern.compile(filenamePattern);
-        this.maxlength = maxlength;
     }
 
     /**
@@ -46,8 +49,12 @@ public class RandomFilePicker {
      */
     public void run() {
         discoverFiles();
-        printDiscoveredFiles(); // Remove (for debug).
-        openFile(getRandomFile());
+        if(searchOnly) {
+            printDiscoveredFiles();
+        } else {
+            printDiscoveredFiles(); // Remove (for debug).
+            openFile(getRandomFile());
+        }
     }
 
     /**
@@ -83,9 +90,11 @@ public class RandomFilePicker {
         return discoveredFiles.get(index);
     }
 
-    // Remove (for debug).
+    /**
+     * Print the discovered files to the console.
+     */
     private void printDiscoveredFiles() {
-        System.out.println("Printing contents of discoveredFiles:");
+        System.out.println("Printing contents of discoveredFiles:\n");
         for (File file : discoveredFiles) {
             System.out.println(file.toString());
         }
@@ -100,6 +109,9 @@ public class RandomFilePicker {
             File[] files = directory.listFiles();
             for(File file : files) {
                 if(file != null) {
+                    if(discoveredFiles.size() >= maxLength) {
+                        break;
+                    }
                     if(file.isFile() && filenameHasDot(file.getName())) {
                         discoveredFiles.add(file);
                     }
@@ -121,6 +133,9 @@ public class RandomFilePicker {
             if (file.isDirectory()) {
                 discoverFiles(file);
             } else {
+                if(discoveredFiles.size() >= maxLength) {
+                    break;
+                }
                 if(filenameHasDot((file.getName()))) {
                     discoveredFiles.add(file);
                 }
