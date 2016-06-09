@@ -4,19 +4,6 @@ import java.io.File;
 
 public class Main {
 
-    // See the below URL for compiling a Java package from the command line:
-    // http://www.jitendrazaa.com/blog/java/compile-and-run-java-program-in-package-from-command-line/
-
-    /*
-
-        Test runtime configs:
-
-        C:\dev\demos\RandomFilePicker\Test_Directory_1 -r
-        C:\dev\demos\RandomFilePicker\Test_Directory_1 -r -m 2000 -s
-        . -r
-
-     */
-
     public static void main(String[] args) {
 
         // Remove (for debug).
@@ -40,13 +27,17 @@ public class Main {
             throw new IllegalArgumentException("Unable to access directory " + directoryName + ". Please make sure the root directory is the first argument.");
         }
 
-        // Find out if user wants a recursive exploration.
+        // Parse remaining command line arguments.
+        boolean printOnly = false;
         boolean recursive = false;
         int maxLength = 100000;
-        boolean printOnly = false;
 
         for (int i = 1; i < args.length; i++) {
             switch(args[i]) {
+                case "-p": {
+                    printOnly = true;
+                    break;
+                }
                 case "-r": {
                     recursive = true;
                     break;
@@ -56,15 +47,11 @@ public class Main {
                     try {
                         maxLength = Integer.parseInt(args[i + 1]);
                     } catch (NumberFormatException e) {
-                        throw new IllegalArgumentException("Received illegal maxLength argument (must be a positive integer): " + args[i + 1]);
+                        throw new IllegalArgumentException("Received illegal -m argument (must be a positive integer): " + args[i + 1]);
                     }
                     if(maxLength < 1 || maxLength > 100000) {
-                        throw new IllegalArgumentException("Received illegal maxLength argument (must be >= 1 and <= 100,000): " + args[i + 1]);
+                        throw new IllegalArgumentException("Received illegal -m argument (must be >= 1 and <= 100,000): " + args[i + 1]);
                     }
-                    break;
-                }
-                case "-p": {
-                    printOnly = true;
                     break;
                 }
             }

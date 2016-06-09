@@ -17,3 +17,13 @@ For Windows users: Root specified filepath names may not have spaces. (Inner rec
 WARNING: Although I have made efforts to limit the type of files that this program may open, it is up to the user to ensure his or her own safety.
 
 (Currently only supports Windows 7. Future updates will include other versions of Windows as well as OS X.)
+
+        IDE sample runtime configs:
+        C:\dev\demos\RandomFilePicker\Test_Directory -r
+        C:\dev\demos\RandomFilePicker\Test_Directory -r -m 2000 -s
+        . -r
+
+        Compiling / running from the command line:
+        javac src/com/jason/*.java
+        java -cp ./src com.jason.Main . -r -p -m 15
+        java -cp ./src com.jason.Main C:\dev\demos\RandomFilePicker\Test_Directory -r

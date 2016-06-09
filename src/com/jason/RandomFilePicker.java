@@ -38,7 +38,7 @@ public class RandomFilePicker {
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
         if(OSDetector.isWindows7()) {
-            // Allowed special characters (_ ' ( ) - ^ ,) are arbitrary guesses for allowed W7 directory names.
+            // Making a guess that these special characters are allowed for W7 directory names: _ ' ( ) - ^ ,
             filenamePattern = "^[a-zA-Z0-9_\'()-^,]+\\.[a-zA-Z0-9]+$";
         }
         // todo: Need to implement pattern for valid Mac filenames.
@@ -50,8 +50,8 @@ public class RandomFilePicker {
         }
 
         // Remove (for debug):
-        System.out.println("\nArguments received: root directory: " + directoryName + ", recursive: " + recursive +
-                ", maxLength: " + maxLength + ", printOnly: " + this.printOnly + ".\n");
+//        System.out.println("\nArguments received: root directory: " + directoryName + ", recursive: " + recursive +
+//                ", maxLength: " + maxLength + ", printOnly: " + this.printOnly + ".\n");
     }
 
     /**
@@ -62,7 +62,7 @@ public class RandomFilePicker {
         if(printOnly) {
             printDiscoveredFiles();
         } else {
-            printDiscoveredFiles(); // Remove (for debug).
+            // printDiscoveredFiles(); // Remove (for debug).
             openFile(getRandomFile());
         }
     }
@@ -73,7 +73,7 @@ public class RandomFilePicker {
      * @param file The file to open.
      */
     private void openFile(File file) {
-        System.out.println("oh hai from openFile. I'm supposed to open " + file.getName());
+        // System.out.println("oh hai from openFile. I'm supposed to open " + file.getName());
         if(OSDetector.isWindows7()) {
             // System.out.println("oh hai windows");
             try {
@@ -82,7 +82,7 @@ public class RandomFilePicker {
                 System.out.println("Error opening file " + file.getName());
             }
         } else if (OSDetector.isMac()) {
-            System.out.println("oh hai mac");
+            // System.out.println("oh hai mac");
             System.out.println("Program currently only supports Windows 7. More OS versions coming soon.");
 //            try {
 //                Runtime.getRuntime().exec(new String[]{"/usr/bin/open", file.getAbsolutePath()});
@@ -105,12 +105,12 @@ public class RandomFilePicker {
      */
     private void printDiscoveredFiles() {
         int printCount = 1;
-        System.out.println("Printing discovered files:\n");
+        System.out.println("\nPrinting discovered files:\n");
         for (File file : discoveredFiles) {
             System.out.println(printCount + ": " + file.toString());
             printCount++;
         }
-        System.out.println("");
+        // System.out.println("");
     }
 
     /**
