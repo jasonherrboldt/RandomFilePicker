@@ -38,7 +38,8 @@ public class RandomFilePicker {
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
         if(OSDetector.isWindows7()) {
-            filenamePattern = "^[a-zA-Z0-9_\'()-^,]+\\.[a-zA-Z0-9]+$"; // Allowed special characters (_ ' ( ) - ^ ,) are arbitrary guesses.
+            // Allowed special characters (_ ' ( ) - ^ ,) are arbitrary guesses for allowed W7 directory names.
+            filenamePattern = "^[a-zA-Z0-9_\'()-^,]+\\.[a-zA-Z0-9]+$";
         }
         // todo: Need to implement pattern for valid Mac filenames.
         pattern = Pattern.compile(filenamePattern);
@@ -168,16 +169,3 @@ public class RandomFilePicker {
         return false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

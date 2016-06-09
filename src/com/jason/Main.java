@@ -8,8 +8,8 @@ public class Main {
 
         Test runtime configs:
 
-        C:\dev\demos\RandomFilePicker\Test_Directory -r
-        C:\dev\demos\RandomFilePicker\Test_Directory -r -m 2000 -s
+        C:\dev\demos\RandomFilePicker\Test_Directory_1 -r
+        C:\dev\demos\RandomFilePicker\Test_Directory_1 -r -m 2000 -s
         . -r
 
      */
@@ -67,7 +67,6 @@ public class Main {
             }
         }
 
-        // Create the RandomFilePicker object and run it.
         RandomFilePicker rfp = new RandomFilePicker(directory, searchOnly, recursive, maxLength);
         rfp.run();
     }
