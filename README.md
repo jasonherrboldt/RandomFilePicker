@@ -1,5 +1,6 @@
 # RandomFilePicker
 (Under construction.)
+
 A program that opens a file at random from a specified directory, using the file's associated default program. Useful for directories of mixed media files like photos, movies, and songs.
 
 This kind of counts as a coding exercise example, but mostly it's just a quick and dirty utility that I wanted to use at home.
