@@ -28,20 +28,13 @@ public class Main {
         }
 
         // Parse remaining command line arguments.
-        boolean printOnly = false;
-        boolean recursive = false;
         int maxLength = 100000;
+        String extension = "";
+        boolean recursive = false;
+        boolean printOnly = false;
 
         for (int i = 1; i < args.length; i++) {
             switch(args[i]) {
-                case "-p": {
-                    printOnly = true;
-                    break;
-                }
-                case "-r": {
-                    recursive = true;
-                    break;
-                }
                 case "-m": {
                     testArg(args, i);
                     try {
@@ -54,10 +47,22 @@ public class Main {
                     }
                     break;
                 }
+                case "-e": {
+                    testArg(args, i);
+                    extension = args[i + 1];
+                }
+                case "-r": {
+                    recursive = true;
+                    break;
+                }
+                case "-p": {
+                    printOnly = true;
+                    break;
+                }
             }
         }
 
-        RandomFilePicker rfp = new RandomFilePicker(directory, printOnly, recursive, maxLength);
+        RandomFilePicker rfp = new RandomFilePicker(directory, maxLength, extension, recursive, printOnly);
         rfp.run();
     }
 

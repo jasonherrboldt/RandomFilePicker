@@ -13,9 +13,10 @@ import java.util.regex.Pattern;
 public class RandomFilePicker {
 
     private File directory;
-    private boolean printOnly;
-    private boolean recursive;
     private int maxLength;
+    private String extension;
+    private boolean recursive;
+    private boolean printOnly;
     private Random randomGenerator;
     private List<File> discoveredFiles;
     String filenamePattern;
@@ -25,16 +26,18 @@ public class RandomFilePicker {
      * Public constructor.
      *
      * @param directory   The directory to explore
-     * @param printOnly  Whether the search should only print results.
-     * @param recursive   Whether the search should be recursive.
      * @param maxLength   The max number of files the program is allowed to discover.
+     * @param extension   Limit the search to files of this type.
+     * @param recursive   Whether the search should be recursive.
+     * @param printOnly   Whether the search should only print results.
      *
      */
-    public RandomFilePicker(File directory, boolean printOnly, boolean recursive, int maxLength) {
+    public RandomFilePicker(File directory, int maxLength, String extension, boolean recursive, boolean printOnly) {
         this.directory = directory;
-        this.printOnly = printOnly;
-        this.recursive = recursive;
         this.maxLength = maxLength;
+        this.extension = extension;
+        this.recursive = recursive;
+        this.printOnly = printOnly;
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
         if(OSDetector.isWindows7()) {
@@ -121,11 +124,13 @@ public class RandomFilePicker {
             File[] files = directory.listFiles();
             for(File file : files) {
                 if(file != null) {
-                    if(discoveredFiles.size() >= maxLength) {
-                        break;
-                    }
-                    if(file.isFile() && filenameHasDot(file.getName())) {
-                        discoveredFiles.add(file);
+                    if(matchesRequestedExtension(file.getName())) {
+                        if(discoveredFiles.size() >= maxLength) {
+                            break;
+                        }
+                        if(file.isFile() && filenameHasDot(file.getName())) {
+                            discoveredFiles.add(file);
+                        }
                     }
                 }
             }
@@ -145,27 +150,36 @@ public class RandomFilePicker {
             if (file.isDirectory()) {
                 discoverFiles(file);
             } else {
-                if(discoveredFiles.size() >= maxLength) {
-                    break;
-                }
-                if(filenameHasDot((file.getName()))) {
-                    discoveredFiles.add(file);
+                if(matchesRequestedExtension(file.getName())) {
+                    if(discoveredFiles.size() >= maxLength) {
+                        break;
+                    }
+                    if(filenameHasDot((file.getName()))) {
+                        discoveredFiles.add(file);
+                    }
                 }
             }
         }
     }
 
     /**
-     * Determine if a discovered file is of the type *.*
-     *
-     * @param filename The file to inspect.
-     * @return
+     * @param fileName   Name of file to analyze.
+     * @return           True if file extension matches user's specification, false otherwise.
+     */
+    private boolean matchesRequestedExtension(String fileName) {
+        if(extension.equals("")) {
+            return false;
+        } else {
+            return true; // todo: Obviously some work to do here.
+        }
+    }
+
+    /**
+     * @param filename  The file to inspect.
+     * @return          True if filename matches the specified pattern, false otherwise.
      */
     private boolean filenameHasDot(String filename) {
         Matcher m = pattern.matcher(filename);
-        if (m.find( )) {
-            return true;
-        }
-        return false;
+        return m.find();
     }
 }
