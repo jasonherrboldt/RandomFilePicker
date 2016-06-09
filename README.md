@@ -7,7 +7,7 @@ This kind of counts as a coding exercise example, but mostly it's just a quick a
 
 Command line usage:
 * directory [The directory to explore ("." for current).]
-* -s (Only display discovered files -- do not open any of them.)
+* -p (Only print discovered files to the console. Do not open any of them.)
 * -r (Make the exploration recursive to all subdirectories.)
 * -m [The max number of files the program is allowed to discover. Must be >= 1 and <= 100,000. (Default is 100,000.)]
 

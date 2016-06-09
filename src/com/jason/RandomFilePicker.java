@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class RandomFilePicker {
 
     private File directory;
-    private boolean searchOnly;
+    private boolean printOnly;
     private boolean recursive;
     private int maxLength;
     private Random randomGenerator;
@@ -25,14 +25,14 @@ public class RandomFilePicker {
      * Public constructor.
      *
      * @param directory   The directory to explore
-     * @param searchOnly  Whether the search should only print results.
+     * @param printOnly  Whether the search should only print results.
      * @param recursive   Whether the search should be recursive.
      * @param maxLength   The max number of files the program is allowed to discover.
      *
      */
-    public RandomFilePicker(File directory, boolean searchOnly, boolean recursive, int maxLength) {
+    public RandomFilePicker(File directory, boolean printOnly, boolean recursive, int maxLength) {
         this.directory = directory;
-        this.searchOnly = searchOnly;
+        this.printOnly = printOnly;
         this.recursive = recursive;
         this.maxLength = maxLength;
         randomGenerator = new Random();
@@ -51,7 +51,7 @@ public class RandomFilePicker {
 
         // Remove (for debug):
         System.out.println("\nArguments received: root directory: " + directoryName + ", recursive: " + recursive +
-                ", maxLength: " + maxLength + ", searchOnly: " + searchOnly + ".\n");
+                ", maxLength: " + maxLength + ", printOnly: " + this.printOnly + ".\n");
     }
 
     /**
@@ -59,7 +59,7 @@ public class RandomFilePicker {
      */
     public void run() {
         discoverFiles();
-        if(searchOnly) {
+        if(printOnly) {
             printDiscoveredFiles();
         } else {
             printDiscoveredFiles(); // Remove (for debug).

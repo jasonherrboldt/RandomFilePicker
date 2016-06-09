@@ -40,7 +40,7 @@ public class Main {
         // Find out if user wants a recursive exploration.
         boolean recursive = false;
         int maxLength = 100000;
-        boolean searchOnly = false;
+        boolean printOnly = false;
 
         for (int i = 1; i < args.length; i++) {
             switch(args[i]) {
@@ -60,14 +60,14 @@ public class Main {
                     }
                     break;
                 }
-                case "-s": {
-                    searchOnly = true;
+                case "-p": {
+                    printOnly = true;
                     break;
                 }
             }
         }
 
-        RandomFilePicker rfp = new RandomFilePicker(directory, searchOnly, recursive, maxLength);
+        RandomFilePicker rfp = new RandomFilePicker(directory, printOnly, recursive, maxLength);
         rfp.run();
     }
 
