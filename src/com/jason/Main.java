@@ -4,6 +4,9 @@ import java.io.File;
 
 public class Main {
 
+    // See the below URL for compiling a Java package from the command line:
+    // http://www.jitendrazaa.com/blog/java/compile-and-run-java-program-in-package-from-command-line/
+
     /*
 
         Test runtime configs:
