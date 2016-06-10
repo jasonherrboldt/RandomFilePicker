@@ -19,8 +19,8 @@ public class RandomFilePicker {
     private boolean printOnly;
     private Random randomGenerator;
     private List<File> discoveredFiles;
-    String filenamePattern;
-    Pattern pattern;
+    private String filenamePattern;
+    private Pattern pattern;
 
     /**
      * Public constructor.
@@ -34,13 +34,6 @@ public class RandomFilePicker {
      */
     public RandomFilePicker(File directory, int maxLength, String extension, boolean recursive, boolean printOnly) {
         this.directory = directory;
-
-        // Debug:
-//        this.directory= new File("/Users/jasonherrboldt/Music/iTunes/iTunes Media/Music");
-//        if (!this.directory.exists()) {
-//            throw new IllegalArgumentException("Unable to access directory. Please make sure the root directory is the first argument.");
-//        }
-
         this.maxLength = maxLength;
         this.extension = extension;
         this.recursive = recursive;
@@ -48,8 +41,8 @@ public class RandomFilePicker {
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
         if(OSDetector.isWindows7() || OSDetector.isMac()) {
-            // Making a guess that these special characters are allowed for W7 and Mac directory names: _ ' ( ) - ^ ,
-            // (Includes whitespace character.)
+            // Making a guess that these special characters are allowed for W7 and Mac file names: _ ' ( ) - ^ ,
+            // (Includes whitespace character.) Should be of the form [*.*], where * is one or more characters.
             filenamePattern = "^[a-zA-Z0-9_\'()-^,\\s]+\\.[a-zA-Z0-9]+$";
         }
         // todo: Need to implement pattern for valid Mac filenames.
@@ -68,7 +61,7 @@ public class RandomFilePicker {
             directoryName = "(the current directory)";
         } else {
             File directory = new File(directoryName);
-            directoryName = directory.getAbsolutePath();
+            directoryName = this.directory.getAbsolutePath();
         }
         String os = "";
         if(OSDetector.isWindows7()) {
