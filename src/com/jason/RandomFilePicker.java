@@ -76,7 +76,7 @@ public class RandomFilePicker {
         System.out.println("User's OS: " + os);
         System.out.println("Root directory: " + directoryName);
         System.out.println("Max length: " + maxLength);
-        System.out.println("Extension(s): " + extension);
+        System.out.println("Extension limiter(s): " + extension);
         System.out.println("Recursive: " + recursive);
         System.out.println("Print only: " + printOnly + "\n");
     }
