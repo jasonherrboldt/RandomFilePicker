@@ -40,33 +40,50 @@ public class RandomFilePicker {
         this.printOnly = printOnly;
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
-        if(OSDetector.isWindows7()) {
+        if(OSDetector.isWindows7() || OSDetector.isMac()) {
             // Making a guess that these special characters are allowed for W7 directory names: _ ' ( ) - ^ ,
             filenamePattern = "^[a-zA-Z0-9_\'()-^,]+\\.[a-zA-Z0-9]+$";
         }
         // todo: Need to implement pattern for valid Mac filenames.
-        pattern = Pattern.compile(filenamePattern);
+        if(filenamePattern != null) {
+            pattern = Pattern.compile(filenamePattern);
+        }
+    }
 
+    /**
+     * Remove (for debug).
+     */
+    private void printUserStats() {
         String directoryName = this.directory.getName();
         if(directoryName.equals(".")) {
             directoryName = "(the current directory)";
         }
-
-        // Remove (for debug):
-//        System.out.println("\nArguments received: root directory: " + directoryName + ", recursive: " + recursive +
-//                ", maxLength: " + maxLength + ", printOnly: " + this.printOnly + ".\n");
+        String os = "";
+        if(OSDetector.isWindows7()) {
+            os = "Windows 7";
+        } else if (OSDetector.isMac()) {
+            os = "Mac";
+        } else {
+            os = "Unknown";
+        }
+        System.out.println("\nUser's OS: " + os);
+        System.out.println("Root directory: " + directoryName);
+        System.out.println("Recursive: " + recursive);
+        System.out.println("Max length: " + maxLength);
+        System.out.println("Print only:" + printOnly + "\n");
     }
 
     /**
      * Chain of commands triggered from Main.
      */
     public void run() {
+        printUserStats(); // Remove (for debug).
         discoverFiles();
         if(printOnly) {
             printDiscoveredFiles();
         } else {
-            // printDiscoveredFiles(); // Remove (for debug).
-            openFile(getRandomFile());
+            printDiscoveredFiles(); // Remove (for debug).
+            // openFile(getRandomFile());
         }
     }
 
@@ -85,7 +102,7 @@ public class RandomFilePicker {
                 System.out.println("Error opening file " + file.getName());
             }
         } else if (OSDetector.isMac()) {
-            // System.out.println("oh hai mac");
+            System.out.println("oh hai mac");
             System.out.println("Program currently only supports Windows 7. More OS versions coming soon.");
 //            try {
 //                Runtime.getRuntime().exec(new String[]{"/usr/bin/open", file.getAbsolutePath()});
@@ -128,7 +145,7 @@ public class RandomFilePicker {
                         if(discoveredFiles.size() >= maxLength) {
                             break;
                         }
-                        if(file.isFile() && filenameHasDot(file.getName())) {
+                        if(file.isFile() && filenameMatchesPattern(file.getName())) {
                             discoveredFiles.add(file);
                         }
                     }
@@ -154,7 +171,7 @@ public class RandomFilePicker {
                     if(discoveredFiles.size() >= maxLength) {
                         break;
                     }
-                    if(filenameHasDot((file.getName()))) {
+                    if(filenameMatchesPattern((file.getName()))) {
                         discoveredFiles.add(file);
                     }
                 }
@@ -167,10 +184,11 @@ public class RandomFilePicker {
      * @return           True if file extension matches user's specification, false otherwise.
      */
     private boolean matchesRequestedExtension(String fileName) {
-        if(extension.equals("")) {
+        if(!extension.equals("")) {
+            // todo: Obviously some work to do here.
             return false;
         } else {
-            return true; // todo: Obviously some work to do here.
+            return true;
         }
     }
 
@@ -178,7 +196,7 @@ public class RandomFilePicker {
      * @param filename  The file to inspect.
      * @return          True if filename matches the specified pattern, false otherwise.
      */
-    private boolean filenameHasDot(String filename) {
+    private boolean filenameMatchesPattern(String filename) {
         Matcher m = pattern.matcher(filename);
         return m.find();
     }

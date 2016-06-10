@@ -19,7 +19,7 @@ WARNING: Although I have made efforts to limit the type of files that this progr
 (Currently only supports Windows 7. Future updates will include other versions of Windows as well as OS X.)
 
         IDE sample runtime configs:
-        C:\dev\demos\RandomFilePicker\Test_Directory -r .docx
+        C:\dev\demos\RandomFilePicker\Test_Directory -r docx
         C:\dev\demos\RandomFilePicker\Test_Directory -r -m 2000 -s
         . -r
 
