@@ -7,10 +7,12 @@ This kind of counts as a coding exercise example, but mostly it's just a quick a
 
 Command line usage:
 * directory [The directory to explore ("." for current).]
-* -p (Only print discovered files to the console. Do not open any of them.)
-* -r (Make the exploration recursive to all subdirectories.)
 * -m [The max number of files the program is allowed to discover. Must be >= 1 and <= 100,000. (Default is 100,000.)]
-* -e (Only search for / open files with this extension.)
+* -e (Only search for / open files with this extension.
+* -r (Make the exploration recursive to all subdirectories.)
+* -p (Only print discovered files to the console. Do not open any of them.)
+
+The first argument must be the root directory; all other options may be entered in any order.
 
 For Windows users: Root specified filepath names may not have spaces. (Inner recursive directory names may have spaces).
 

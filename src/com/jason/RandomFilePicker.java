@@ -52,12 +52,16 @@ public class RandomFilePicker {
     }
 
     /**
-     * Remove (for debug).
+     * Print the requested execution details to the console.
      */
     private void printUserStats() {
+        System.out.println("\nRuntime details:\n");
         String directoryName = this.directory.getName();
         if(directoryName.equals(".")) {
             directoryName = "(the current directory)";
+        } else {
+            File directory = new File(directoryName);
+            directoryName = directory.getAbsolutePath();
         }
         String os = "";
         if(OSDetector.isWindows7()) {
@@ -67,10 +71,11 @@ public class RandomFilePicker {
         } else {
             os = "Unknown";
         }
-        System.out.println("\nUser's OS: " + os);
+        System.out.println("User's OS: " + os);
         System.out.println("Root directory: " + directoryName);
-        System.out.println("Recursive: " + recursive);
         System.out.println("Max length: " + maxLength);
+        System.out.println("Extension: " + extension);
+        System.out.println("Recursive: " + recursive);
         System.out.println("Print only: " + printOnly + "\n");
     }
 
@@ -78,7 +83,7 @@ public class RandomFilePicker {
      * Chain of commands triggered from Main.
      */
     public void run() {
-        printUserStats(); // Remove (for debug).
+        printUserStats();
         discoverFiles();
         if(printOnly) {
             printDiscoveredFiles();
@@ -127,9 +132,16 @@ public class RandomFilePicker {
         System.out.println("\nPrinting discovered files:\n");
         for (File file : discoveredFiles) {
             System.out.println(printCount + ": " + file.toString());
+//            System.out.println("Printing tokens:");
+//            String[] result = file.getName().split("\\.");
+//            for (int x=0; x<result.length; x++) {
+//                System.out.println(result[x]);
+//            }
+//            System.out.println("Length of token array is " + result.length);
+//            System.out.println("result[length - 1]: " + result[result.length - 1]);
+//            System.out.println("");
             printCount++;
         }
-        // System.out.println("");
     }
 
     /**
@@ -184,9 +196,16 @@ public class RandomFilePicker {
      */
     private boolean matchesRequestedExtension(String fileName) {
         if(extension.equals("")) {
+            // User did not specify a file extension.
+            // (Yes, I know this conditional doesn't belong in here. Don't care. Makes everything easier.)
             return true;
         } else {
-            // todo: Obviously some work to do here.
+            String[] tokens = fileName.split("\\.");
+            if(tokens.length > 0) {
+                if(tokens[tokens.length - 1].equals(extension)) {
+                    return true;
+                }
+            }
             return false;
         }
     }
