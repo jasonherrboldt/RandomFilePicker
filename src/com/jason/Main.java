@@ -16,15 +16,17 @@ public class Main {
         }
 
         // Blow up if the user's not submitting the correct number of arguments.
-        if(args.length < 1 || args.length > 5) {
-            throw new IllegalArgumentException("Invalid number of arguments received; must be > 0 and < 6.");
+        if(args.length < 1 || args.length > 7) {
+            throw new IllegalArgumentException("Invalid number of arguments received; must be > 0 and < 8.\n" +
+                    "(Please also make sure the root directory is the first argument, and that it is wrapped in double quotes.\n");
         }
 
         // Blow up if unable to verify existence of chosen directory.
         String directoryName = args[0];
         File directory = new File(directoryName);
         if (!directory.exists()) {
-            throw new IllegalArgumentException("Unable to access directory " + directoryName + ". Please make sure the root directory is the first argument.");
+            throw new IllegalArgumentException("Unable to access directory " + directoryName + ".\nPlease make sure the root directory is the first argument," +
+            " and that it is wrapped in double quotes.");
         }
 
         // Parse remaining command line arguments.

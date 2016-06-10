@@ -34,6 +34,13 @@ public class RandomFilePicker {
      */
     public RandomFilePicker(File directory, int maxLength, String extension, boolean recursive, boolean printOnly) {
         this.directory = directory;
+
+        // Debug:
+//        this.directory= new File("/Users/jasonherrboldt/Music/iTunes/iTunes Media/Music");
+//        if (!this.directory.exists()) {
+//            throw new IllegalArgumentException("Unable to access directory. Please make sure the root directory is the first argument.");
+//        }
+
         this.maxLength = maxLength;
         this.extension = extension;
         this.recursive = recursive;
@@ -132,14 +139,6 @@ public class RandomFilePicker {
         System.out.println("\nPrinting discovered files:\n");
         for (File file : discoveredFiles) {
             System.out.println(printCount + ": " + file.toString());
-//            System.out.println("Printing tokens:");
-//            String[] result = file.getName().split("\\.");
-//            for (int x=0; x<result.length; x++) {
-//                System.out.println(result[x]);
-//            }
-//            System.out.println("Length of token array is " + result.length);
-//            System.out.println("result[length - 1]: " + result[result.length - 1]);
-//            System.out.println("");
             printCount++;
         }
     }
