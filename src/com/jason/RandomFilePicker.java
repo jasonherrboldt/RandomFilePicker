@@ -41,8 +41,9 @@ public class RandomFilePicker {
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
         if(OSDetector.isWindows7() || OSDetector.isMac()) {
-            // Making a guess that these special characters are allowed for W7 directory names: _ ' ( ) - ^ ,
-            filenamePattern = "^[a-zA-Z0-9_\'()-^,]+\\.[a-zA-Z0-9]+$";
+            // Making a guess that these special characters are allowed for W7 and Mac directory names: _ ' ( ) - ^ ,
+            // (Includes whitespace character.)
+            filenamePattern = "^[a-zA-Z0-9_\'()-^,\\s]+\\.[a-zA-Z0-9]+$";
         }
         // todo: Need to implement pattern for valid Mac filenames.
         if(filenamePattern != null) {
@@ -70,7 +71,7 @@ public class RandomFilePicker {
         System.out.println("Root directory: " + directoryName);
         System.out.println("Recursive: " + recursive);
         System.out.println("Max length: " + maxLength);
-        System.out.println("Print only:" + printOnly + "\n");
+        System.out.println("Print only: " + printOnly + "\n");
     }
 
     /**
@@ -83,7 +84,7 @@ public class RandomFilePicker {
             printDiscoveredFiles();
         } else {
             printDiscoveredFiles(); // Remove (for debug).
-            // openFile(getRandomFile());
+            openFile(getRandomFile());
         }
     }
 
@@ -102,13 +103,11 @@ public class RandomFilePicker {
                 System.out.println("Error opening file " + file.getName());
             }
         } else if (OSDetector.isMac()) {
-            System.out.println("oh hai mac");
-            System.out.println("Program currently only supports Windows 7. More OS versions coming soon.");
-//            try {
-//                Runtime.getRuntime().exec(new String[]{"/usr/bin/open", file.getAbsolutePath()});
-//            } catch (IOException e) {
-//                System.out.println("Error opening file " + file.getName());
-//            }
+            try {
+                Runtime.getRuntime().exec(new String[]{"/usr/bin/open", file.getAbsolutePath()});
+            } catch (IOException e) {
+                System.out.println("Error opening file " + file.getName());
+            }
         }
     }
 
@@ -184,15 +183,17 @@ public class RandomFilePicker {
      * @return           True if file extension matches user's specification, false otherwise.
      */
     private boolean matchesRequestedExtension(String fileName) {
-        if(!extension.equals("")) {
+        if(extension.equals("")) {
+            return true;
+        } else {
             // todo: Obviously some work to do here.
             return false;
-        } else {
-            return true;
         }
     }
 
     /**
+     * Forces the program to only open files of the type *.*
+     *
      * @param filename  The file to inspect.
      * @return          True if filename matches the specified pattern, false otherwise.
      */

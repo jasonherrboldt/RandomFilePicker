@@ -11,9 +11,9 @@ public class Main {
         // System.out.println("\n");
 
         // Blow up if the user isn't on Windows 7.
-//        if(!OSDetector.isWindows7()) {
-//            throw new IllegalArgumentException("Program currently only supports Windows 7. More OS versions coming soon.");
-//        }
+        if(!OSDetector.isWindows7() && !OSDetector.isMac()) {
+            throw new IllegalArgumentException("Program currently only supports Windows 7 and OS X. More OS versions coming soon.");
+        }
 
         // Blow up if the user's not submitting the correct number of arguments.
         if(args.length < 1 || args.length > 5) {
