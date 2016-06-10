@@ -16,6 +16,40 @@ Command line usage:
 
 WARNING: Although I have made efforts to limit the type of files that this program may open, it is up to the user to ensure his or her own safety.
 
+Sample console output:
+
+        Runtime details:
+
+        User's OS: Mac
+        Root directory: (the current directory)
+        Max length: 20
+        Extension:
+        Recursive: true
+        Print only: true
+
+
+        The following file type extensions were discovered:
+
+        txt
+        xml
+        iml
+        idx
+        sample
+        pack
+        class
+
+
+        Printing discovered files:
+
+        1: ./.git/hooks/applypatch-msg.sample
+        2: ./.git/hooks/commit-msg.sample
+        3: ./.git/hooks/post-update.sample
+        4: ./.git/hooks/pre-applypatch.sample
+        5: ./.git/hooks/pre-commit.sample
+        6: ./.git/hooks/pre-push.sample
+        7: ./.git/hooks/pre-rebase.sample
+        8: ./.git/hooks/prepare-commit-msg.sample
+
 (Currently only supports Windows 7. Future updates will include other versions of Windows as well as OS X.)
 
         IDE sample runtime configs:

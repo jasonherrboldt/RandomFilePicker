@@ -21,6 +21,7 @@ public class RandomFilePicker {
     private List<File> discoveredFiles;
     private String filenamePattern;
     private Pattern pattern;
+    private Set<String> extensionsFound;
 
     /**
      * Public constructor.
@@ -49,6 +50,7 @@ public class RandomFilePicker {
         if(filenamePattern != null) {
             pattern = Pattern.compile(filenamePattern);
         }
+        extensionsFound = new HashSet<>();
     }
 
     /**
@@ -74,7 +76,7 @@ public class RandomFilePicker {
         System.out.println("User's OS: " + os);
         System.out.println("Root directory: " + directoryName);
         System.out.println("Max length: " + maxLength);
-        System.out.println("Extension: " + extension);
+        System.out.println("Extension(s): " + extension);
         System.out.println("Recursive: " + recursive);
         System.out.println("Print only: " + printOnly + "\n");
     }
@@ -85,6 +87,7 @@ public class RandomFilePicker {
     public void run() {
         printUserStats();
         discoverFiles();
+        printDiscoveredExtensions();
         if(printOnly) {
             printDiscoveredFiles();
         } else {
@@ -125,6 +128,17 @@ public class RandomFilePicker {
     }
 
     /**
+     * Print the discovered extensions to the console.
+     */
+    private void printDiscoveredExtensions() {
+        System.out.println("\nThe following file type extensions were discovered:\n");
+        for(String e : extensionsFound) {
+            System.out.println(e);
+        }
+        System.out.println("");
+    }
+
+    /**
      * Print the discovered files to the console.
      */
     private void printDiscoveredFiles() {
@@ -150,6 +164,7 @@ public class RandomFilePicker {
                         }
                         if(file.isFile() && filenameMatchesPattern(file.getName())) {
                             discoveredFiles.add(file);
+                            recordExtension(file.getName());
                         }
                     }
                 }
@@ -176,9 +191,23 @@ public class RandomFilePicker {
                     }
                     if(filenameMatchesPattern((file.getName()))) {
                         discoveredFiles.add(file);
+                        recordExtension(file.getName());
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Add the discovered extension to the extensionsFound map.
+     *
+     * @param fileName The name of the file to inspect.
+     */
+    private void recordExtension(String fileName) {
+        String[] tokens = fileName.split("\\.");
+        if(tokens.length > 0) {
+            String extension = tokens[tokens.length - 1];
+            extensionsFound.add(extension);
         }
     }
 
@@ -189,7 +218,6 @@ public class RandomFilePicker {
     private boolean matchesRequestedExtension(String fileName) {
         if(extension.equals("")) {
             // User did not specify a file extension.
-            // (Yes, I know this conditional doesn't belong in here. Don't care. Makes everything easier.)
             return true;
         } else {
             String[] tokens = fileName.split("\\.");
