@@ -22,7 +22,7 @@ Sample console output:
 
         User's OS: Mac
         Root directory: (the current directory)
-        Max length: 20
+        Max length: 8
         Extension limiter(s):
         Recursive: true
         Print only: true
