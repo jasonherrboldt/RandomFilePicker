@@ -144,6 +144,9 @@ public class RandomFilePicker {
      */
     private void printDiscoveredExtensions() {
         System.out.println("\nThe following file extensions were discovered:\n");
+        if(extensionsFound.size() == 0) {
+            System.out.println("(Unable to discover any extensions.)");
+        }
         for(String e : extensionsFound) {
             System.out.println("." + e);
         }
@@ -156,6 +159,9 @@ public class RandomFilePicker {
     private void printDiscoveredFiles() {
         int printCount = 1;
         System.out.println("\nPrinting discovered files:\n");
+        if(discoveredFiles.size() == 0) {
+            System.out.println("(Unable to discover any files.)");
+        }
         for (File file : discoveredFiles) {
             System.out.println(printCount + ": " + file.toString());
             printCount++;
