@@ -16,8 +16,8 @@ public class Main {
         }
 
         // Blow up if the user's not submitting the correct number of arguments.
-        if(args.length < 1 || args.length > 7) {
-            throw new IllegalArgumentException("Invalid number of arguments received; must be > 0 and < 8.\n" +
+        if(args.length < 3 || args.length > 7) {
+            throw new IllegalArgumentException("Invalid number of arguments received; must be > 2 and < 8.\n" +
                     "(Please also make sure the root directory is the first argument, and that it is wrapped in double quotes.\n");
         }
 
@@ -30,8 +30,11 @@ public class Main {
         }
 
         // Parse remaining command line arguments.
+        if(args[1].charAt(0) == '-') {
+            throw new IllegalArgumentException("Illegal value for extension limiter(s): " + args[1]);
+        }
+        String extensions = args[1];
         int maxLength = 100000;
-        String extension = "";
         boolean recursive = false;
         boolean printOnly = false;
 
@@ -49,10 +52,6 @@ public class Main {
                     }
                     break;
                 }
-                case "-e": {
-                    testArg(args, i);
-                    extension = args[i + 1];
-                }
                 case "-r": {
                     recursive = true;
                     break;
@@ -64,7 +63,7 @@ public class Main {
             }
         }
 
-        RandomFilePicker rfp = new RandomFilePicker(directory, maxLength, extension, recursive, printOnly);
+        RandomFilePicker rfp = new RandomFilePicker(directory, maxLength, extensions, recursive, printOnly);
         rfp.run();
     }
 
