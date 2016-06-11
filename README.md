@@ -3,11 +3,11 @@
 
 A program that opens a file at random from a specified directory, using the file's associated default program. Useful for large directories of media when you're in the mood to be surprised. (Currently only supports Windows 7 and OS X. Future updates will include other operating systems.)
 
-(Program will only discover files of the type [*.*], where * is some non-empty string. This is to avoid accidentally opening hidden or system files.)
+(Program will only discover files of the type [a.b], where a and b are some non-empty strings. This is to avoid accidentally opening hidden or system files.)
 
 Command line usage:
 * directory [The directory to explore ("." for current). Must be wrapped in double quotes.]
-* -m [The max number of files the program is allowed to discover. (Must be >= 1. Default is 100,000.)]
+* -m [The max number of files the program is allowed to discover. (Must be > 0. Default is 100,000.)]
 * -e (Only search for / open files with specified extension(s). Multiple extensions must be whitespace separated and wrapped in double quotes.)
 * -r (Make the exploration recursive to all subdirectories.)
 * -p (Only print discovered files to the console. Do not open any of them.)
@@ -16,15 +16,15 @@ The first argument is expected to be the root directory; all other options may b
 
 (Hint: If the console output overwhelms your terminal window for huge directories while using the -p option, use "> output.txt" at the end of your arguments to send everything to a file.)
 
-Sample command line usage:
+Sample command line usage in a terminal window:
 
         javac src/com/jason/*.java
 
         Mac:
-        java -cp ./src com.jason.Main "/Users/user/path/to/Root Directory/" -e "docx mp3" -r -p
+        java -cp ./src com.jason.Main "/Users/user/path/to/Root Directory/" -e "docx mp3" -r -p -m 100
 
         Windows:
-        java -cp ./src com.jason.Main "C:\path\to\Root Directory\" -e "docx mp3" -r -p
+        java -cp ./src com.jason.Main "C:\path\to\Root Directory\" -e "docx mp3" -r -p -m 1000
 
 Sample input / output:
 
