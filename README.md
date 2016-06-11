@@ -23,10 +23,10 @@ Sample command line usage:
         javac src/com/jason/*.java
 
         Mac:
-        java -cp ./src com.jason.Main "/Users/user/path/to/Test Directory/" -r -p
+        java -cp ./src com.jason.Main "/Users/user/path/to/Root Directory/" -r -p
 
         Windows:
-        java -cp ./src com.jason.Main "C:\path\to\Test Directory\" -r -p
+        java -cp ./src com.jason.Main "C:\path\to\Root Directory\" -r -p
 
 Sample console output (will only print runtime details if the user does not engage the -p option):
 
