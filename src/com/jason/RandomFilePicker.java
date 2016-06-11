@@ -242,12 +242,15 @@ public class RandomFilePicker {
     }
 
     /**
-     * Forces the program to only open files of the type *.*
+     * Forces the program to only open files of the type *.* -- also rejects filenames that begin with a period. 
      *
      * @param filename  The file to inspect.
      * @return          True if filename matches the specified pattern, false otherwise.
      */
     private boolean filenameIsStarDotStar(String filename) {
+        if(filename.startsWith(".")) {
+            return false;
+        }
         Matcher m = pattern.matcher(filename);
         return m.find();
     }
