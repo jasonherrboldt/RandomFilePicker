@@ -2,6 +2,7 @@ package com.jason;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.*;
 
 /**
  * Opens a file at random in a given directory.
@@ -17,6 +18,7 @@ public class RandomFilePicker {
     private boolean printOnly;
     private Random randomGenerator;
     private List<File> discoveredFiles;
+    private Pattern pattern;
     private Set<String> extensionsFound;
 
     /**
@@ -33,16 +35,21 @@ public class RandomFilePicker {
         this.directory = directory;
         this.maxLength = maxLength;
         this.extensions = new ArrayList<>();
-        String[] tokens = extensions.split("\\s");
-        if(tokens.length > 0) {
-            for(String t : tokens) {
-                this.extensions.add(t);
+        if(!extensions.equals("")) {
+            String[] tokens = extensions.split("\\s");
+            if(tokens.length > 0) {
+                for(String t : tokens) {
+                    this.extensions.add(t);
+                }
             }
         }
         this.recursive = recursive;
         this.printOnly = printOnly;
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
+        String filenamePattern = "^.+\\..+$"; // Must be of the form [*.*], where * is at least one character long.
+        // filenamePattern = "^.+$"; // Allow literally anything (debug). Shows hidden files.
+        pattern = Pattern.compile(filenamePattern);
         extensionsFound = new TreeSet<>();
     }
 
@@ -55,7 +62,6 @@ public class RandomFilePicker {
         if(directoryName.equals(".")) {
             directoryName = "(the current directory)";
         } else {
-            File directory = new File(directoryName);
             directoryName = this.directory.getAbsolutePath();
         }
         String os = "";
@@ -69,10 +75,10 @@ public class RandomFilePicker {
         System.out.println("User's OS: " + os);
         System.out.println("Root directory: " + directoryName);
         System.out.println("Max length: " + maxLength);
-        if(printOnly) {
-            System.out.println("Extension limiter(s): (N/A -- all extensions discovered when using -p option.)");
-        } else {
+        if(extensions.size() > 0) {
             System.out.println("Extension limiter(s): " + extensions);
+        } else {
+            System.out.println("Extension limiter(s): (none)");
         }
         System.out.println("Recursive: " + recursive);
         System.out.println("Print only: " + printOnly + "\n");
@@ -87,8 +93,14 @@ public class RandomFilePicker {
             printDiscoveredFiles();
             printDiscoveredExtensions();
         } else {
-            // printDiscoveredFiles(); // Remove (for debug).
-            openFile(getRandomFile());
+            File file = getRandomFile();
+            if(file != null) {
+                System.out.println("\nOpening file " + file.getName());
+                openFile(file);
+            } else {
+                System.out.println("\nUnable to discover any files.");
+            }
+            printDiscoveredExtensions();
         }
         printUserStats();
     }
@@ -120,15 +132,18 @@ public class RandomFilePicker {
      * Pick and return a file at random from discoveredFiles.
      */
     private File getRandomFile() {
-        int index = randomGenerator.nextInt(discoveredFiles.size());
-        return discoveredFiles.get(index);
+        if(discoveredFiles.size() > 0) {
+            int index = randomGenerator.nextInt(discoveredFiles.size());
+            return discoveredFiles.get(index);
+        }
+        return null;
     }
 
     /**
      * Print the discovered extensions to the console.
      */
     private void printDiscoveredExtensions() {
-        System.out.println("\nThe following file type extensions were discovered:\n");
+        System.out.println("\nThe following file extensions were discovered:\n");
         for(String e : extensionsFound) {
             System.out.println("." + e);
         }
@@ -157,17 +172,10 @@ public class RandomFilePicker {
                 if(discoveredFiles.size() >= maxLength) {
                     break;
                 }
-                if(printOnly) {
-                    if(file.isFile()) {
+                if(file.isFile() && filenameIsStarDotStar(file.getName())) {
+                    if(matchesRequestedExtensions(file.getName())) {
                         discoveredFiles.add(file);
                         recordExtension(file.getName());
-                    }
-                } else {
-                    if(matchesRequestedExtensions(file.getName())) {
-                        if(file.isFile()) {
-                            discoveredFiles.add(file);
-                            recordExtension(file.getName());
-                        }
                     }
                 }
             }
@@ -190,10 +198,7 @@ public class RandomFilePicker {
             if (file.isDirectory()) {
                 discoverFiles(file);
             } else {
-                if(printOnly) {
-                    discoveredFiles.add(file);
-                    recordExtension(file.getName());
-                } else {
+                if(filenameIsStarDotStar(file.getName())) {
                     if(matchesRequestedExtensions(file.getName())) {
                         discoveredFiles.add(file);
                         recordExtension(file.getName());
@@ -221,21 +226,23 @@ public class RandomFilePicker {
      * @return           True if file extensions matches user's specification, false otherwise.
      */
     private boolean matchesRequestedExtensions(String fileName) {
-        String[] tokens = fileName.split("\\.");
-        String thisExtension = tokens[tokens.length - 1];
-        return extensions.contains(thisExtension);
+        if(extensions.size() == 0) {
+            return true;
+        } else {
+            String[] tokens = fileName.split("\\.");
+            String thisExtension = tokens[tokens.length - 1];
+            return extensions.contains(thisExtension);
+        }
+    }
 
-//        if(extensions.equals("")) {
-//            // User did not specify a file extensions.
-//            return true;
-//        } else {
-//            String[] tokens = fileName.split("\\.");
-//            if(tokens.length > 0) {
-//                if(tokens[tokens.length - 1].equals(extensions)) {
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }
+    /**
+     * Forces the program to only open files of the type *.*
+     *
+     * @param filename  The file to inspect.
+     * @return          True if filename matches the specified pattern, false otherwise.
+     */
+    private boolean filenameIsStarDotStar(String filename) {
+        Matcher m = pattern.matcher(filename);
+        return m.find();
     }
 }

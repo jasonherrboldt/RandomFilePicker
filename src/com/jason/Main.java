@@ -16,8 +16,8 @@ public class Main {
         }
 
         // Blow up if the user's not submitting the correct number of arguments.
-        if(args.length < 3 || args.length > 7) {
-            throw new IllegalArgumentException("Invalid number of arguments received; must be > 2 and < 8.\n" +
+        if(args.length < 1 || args.length > 7) {
+            throw new IllegalArgumentException("Invalid number of arguments received; must be > 0 and < 8.\n" +
                     "(Please also make sure the root directory is the first argument, and that it is wrapped in double quotes.\n");
         }
 
@@ -30,11 +30,8 @@ public class Main {
         }
 
         // Parse remaining command line arguments.
-        if(args[1].charAt(0) == '-') {
-            throw new IllegalArgumentException("Illegal value for extension limiter(s): " + args[1]);
-        }
-        String extensions = args[1];
         int maxLength = 100000;
+        String extensions = "";
         boolean recursive = false;
         boolean printOnly = false;
 
@@ -47,10 +44,11 @@ public class Main {
                     } catch (NumberFormatException e) {
                         throw new IllegalArgumentException("Received illegal -m argument (must be a positive integer): " + args[i + 1]);
                     }
-                    if(maxLength < 1 || maxLength > 100000) {
-                        throw new IllegalArgumentException("Received illegal -m argument (must be >= 1 and <= 100,000): " + args[i + 1]);
-                    }
                     break;
+                }
+                case "-e": {
+                    testArg(args, i);
+                    extensions = args[i + 1];
                 }
                 case "-r": {
                     recursive = true;
