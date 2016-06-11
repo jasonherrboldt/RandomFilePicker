@@ -50,7 +50,7 @@ public class RandomFilePicker {
         if(filenamePattern != null) {
             pattern = Pattern.compile(filenamePattern);
         }
-        extensionsFound = new HashSet<>();
+        extensionsFound = new TreeSet<>();
     }
 
     /**
@@ -87,8 +87,8 @@ public class RandomFilePicker {
     public void run() {
         printUserStats();
         discoverFiles();
-        printDiscoveredExtensions();
         if(printOnly) {
+            printDiscoveredExtensions();
             printDiscoveredFiles();
         } else {
             // printDiscoveredFiles(); // Remove (for debug).
@@ -131,11 +131,13 @@ public class RandomFilePicker {
      * Print the discovered extensions to the console.
      */
     private void printDiscoveredExtensions() {
-        System.out.println("\nThe following file type extensions were discovered:\n");
-        for(String e : extensionsFound) {
-            System.out.println(e);
+        if(extension.equals("")) {
+            System.out.println("\nThe following file type extensions were discovered:\n");
+            for(String e : extensionsFound) {
+                System.out.println("." + e);
+            }
+            System.out.println("");
         }
-        System.out.println("");
     }
 
     /**
