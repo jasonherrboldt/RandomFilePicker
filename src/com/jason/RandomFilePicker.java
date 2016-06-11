@@ -91,7 +91,7 @@ public class RandomFilePicker {
         if(printOnly) {
             printDiscoveredFiles();
         } else {
-            printDiscoveredFiles(); // Remove (for debug).
+            // printDiscoveredFiles(); // Remove (for debug).
             openFile(getRandomFile());
         }
     }
