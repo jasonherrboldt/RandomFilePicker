@@ -223,7 +223,7 @@ public class RandomFilePicker {
         String[] tokens = fileName.split("\\.");
         if(tokens.length > 0) {
             String extension = tokens[tokens.length - 1];
-            extensionsFound.add(extension);
+            extensionsFound.add(extension.toLowerCase());
         }
     }
 
@@ -237,12 +237,12 @@ public class RandomFilePicker {
         } else {
             String[] tokens = fileName.split("\\.");
             String thisExtension = tokens[tokens.length - 1];
-            return extensions.contains(thisExtension);
+            return extensions.contains(thisExtension.toLowerCase());
         }
     }
 
     /**
-     * Forces the program to only open files of the type *.* -- also rejects filenames that begin with a period. 
+     * Forces the program to only open files of the type *.* -- also rejects filenames that begin with a period.
      *
      * @param filename  The file to inspect.
      * @return          True if filename matches the specified pattern, false otherwise.
