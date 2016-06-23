@@ -2,7 +2,7 @@
 
 A program that opens a file at random from a specified directory, using the file's associated default program. Useful for large directories of media when you're in the mood to be surprised. (Currently only supports Windows 7 and OS X. Future updates will include other operating systems.)
 
-(Program will only discover files of the type [a.b], where a and b are some non-empty strings. This is to avoid accidentally opening hidden or system files.)
+(Program will only discover files of the type [a.b], where a and b are some non-empty strings. This is to avoid accidentally opening hidden or system files. It's a good idea to run the program in print-only mode before opening a file at random from a given directory, just to be on the safe side.)
 
 Command line usage:
 * directory [The directory to explore ("." for current). Must be wrapped in double quotes.]
