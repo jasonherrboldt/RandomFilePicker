@@ -1,4 +1,4 @@
-# RandomFilePicker
+# Random File Picker
 
 A program that opens a file at random from a specified directory, using the file's associated default program. Useful for large directories of media when you're in the mood to be surprised. (Currently only supports Windows 7 and OS X. Future updates will include other operating systems.)
 
