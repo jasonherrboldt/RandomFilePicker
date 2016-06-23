@@ -10,7 +10,7 @@ public class Main {
         // System.getProperties().list(System.out);
         // System.out.println("\n");
 
-        // Blow up if the user isn't on Windows 7.
+        // Blow up if the user isn't on Windows 7 or Mac.
         if(!OSDetector.isWindows7() && !OSDetector.isMac()) {
             throw new IllegalArgumentException("Program currently only supports Windows 7 and OS X. More OS versions coming soon.");
         }

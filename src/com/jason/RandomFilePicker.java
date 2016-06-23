@@ -39,7 +39,7 @@ public class RandomFilePicker {
             String[] tokens = extensions.split("\\s");
             if(tokens.length > 0) {
                 for(String t : tokens) {
-                    this.extensions.add(t);
+                    this.extensions.add(t.toLowerCase());
                 }
             }
         }
