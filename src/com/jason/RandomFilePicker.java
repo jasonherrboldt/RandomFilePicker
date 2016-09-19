@@ -20,6 +20,7 @@ public class RandomFilePicker {
     private List<File> discoveredFiles;
     private Pattern pattern;
     private Set<String> extensionsFound;
+    private boolean showInfo;
 
     /**
      * Public constructor.
@@ -31,7 +32,7 @@ public class RandomFilePicker {
      * @param printOnly   Whether the search should only print results.
      *
      */
-    public RandomFilePicker(File directory, int maxLength, String extensions, boolean recursive, boolean printOnly) {
+    public RandomFilePicker(File directory, int maxLength, String extensions, boolean recursive, boolean printOnly, boolean showInfo) {
         this.directory = directory;
         this.maxLength = maxLength;
         this.extensions = new ArrayList<>();
@@ -45,6 +46,7 @@ public class RandomFilePicker {
         }
         this.recursive = recursive;
         this.printOnly = printOnly;
+        this.showInfo = showInfo;
         randomGenerator = new Random();
         discoveredFiles = new ArrayList<>();
         String filenamePattern = "^.+\\..+$"; // Must be of the form [*.*], where * is at least one character long.
@@ -91,7 +93,9 @@ public class RandomFilePicker {
         discoverFiles();
         if(printOnly) {
             printDiscoveredFiles();
-            printDiscoveredExtensions();
+            if(showInfo) {
+                printDiscoveredExtensions();
+            }
         } else {
             File file = getRandomFile();
             if(file != null) {
@@ -100,9 +104,13 @@ public class RandomFilePicker {
             } else {
                 System.out.println("\nUnable to discover any files.");
             }
-            printDiscoveredExtensions();
+            if(showInfo) {
+                printDiscoveredExtensions();
+            }
         }
-        printUserStats();
+        if(showInfo) {
+            printUserStats();
+        }
     }
 
     /**

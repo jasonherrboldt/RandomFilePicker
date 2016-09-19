@@ -6,18 +6,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Remove (for debug).
-        // System.getProperties().list(System.out);
-        // System.out.println("\n");
-
         // Blow up if the user isn't on Windows 7 or Mac.
         if(!OSDetector.isWindows7() && !OSDetector.isMac()) {
             throw new IllegalArgumentException("Program currently only supports Windows 7 and OS X. More OS versions coming soon.");
         }
 
         // Blow up if the user's not submitting the correct number of arguments.
-        if(args.length < 1 || args.length > 7) {
-            throw new IllegalArgumentException("Invalid number of arguments received; must be > 0 and < 8.\n" +
+        if(args.length < 1 || args.length > 8) {
+            throw new IllegalArgumentException("Invalid number of arguments received; must be > 0 and < 9.\n" +
                     "(Please also make sure the root directory is the first argument, and that it is wrapped in double quotes.\n");
         }
 
@@ -34,6 +30,7 @@ public class Main {
         String extensions = "";
         boolean recursive = false;
         boolean printOnly = false;
+        boolean showInfo = false;
 
         for (int i = 1; i < args.length; i++) {
             switch(args[i]) {
@@ -58,10 +55,14 @@ public class Main {
                     printOnly = true;
                     break;
                 }
+                case "-i": {
+                    showInfo = true;
+                    break;
+                }
             }
         }
 
-        RandomFilePicker rfp = new RandomFilePicker(directory, maxLength, extensions, recursive, printOnly);
+        RandomFilePicker rfp = new RandomFilePicker(directory, maxLength, extensions, recursive, printOnly, showInfo);
         rfp.run();
     }
 
